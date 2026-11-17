@@ -1,0 +1,27 @@
+name: Publish to MCP Registry
+on:
+  push:
+    tags: ["v*.*.*"]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install mcp-publisher
+        run: |
+          MCP_PUBLISHER_VERSION="v1.8.9"
+          OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+          ARCH=$(uname -m | sed -e 's/x86_64/amd64/' -e 's/aarch64/arm64/')
+          curl -fLO "https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}/mcp-publisher_${OS}_${ARCH}.tar.gz"
+          # SHA-256 digest for mcp-publisher_linux_amd64.tar.gz as published on the v1.8.9 release page.
+          echo "4d527ca8f1ced0394c962dc925c2a4a4addef441cbefd62501c875e9481823a8  mcp-publisher_${OS}_${ARCH}.tar.gz" | sha256sum -c -
+          tar -xzf "mcp-publisher_${OS}_${ARCH}.tar.gz"
+      - name: Verify installation
+        run: ./mcp-publisher --help
+      - name: Login to MCP Registry
+        run: ./mcp-publisher login github-oidc
+      - name: Run the Publisher
+        run: ./mcp-publisher publish
