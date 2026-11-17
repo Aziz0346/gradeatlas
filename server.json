@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Aziz0346/gradeatlas",
   "title": "GradeAtlas MCP",
-  "description": "GradeAtlas MCP — convert grades between 1,159 grading systems across 246 countries into the US 4.0 GPA scale, with university search and country grading guides.",
+  "description": "Convert grades between 1,159 grading systems across 246 countries into the US 4.0 GPA scale.",
   "version": "0.1.0",
   "websiteUrl": "https://gradeatlas.org",
   "repository": {
